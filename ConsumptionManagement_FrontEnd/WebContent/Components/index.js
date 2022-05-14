@@ -10,6 +10,14 @@ function formValidation() {
 	if ($("#Uprice").val().trim() == '') {
 		return "Please Enter Unit price";
 	}
+	var Uprice = $("#Uprice").val().trim();
+	if(!$.isNumeric(Uprice)){
+		return "Insert a numerical value for Unit Price.";
+	}
+	var crm = $("#Cmr").val().trim();
+	if(!$.isNumeric(crm)){
+		return "Insert a numerical value for Current Reading.";
+	}
 	return true;
 
 }
@@ -50,8 +58,11 @@ $(document).on("click", "#btnSave", function(event) {
 //update
 $(document).on("click", "#btnUpdate", function() {
 	$("#Cmr").prop('disabled', true);
+	$("#AccNo").prop('disabled', true);
 	$("#hiddenID").val($(this).data("cid"));
-	$("#date").val("2021/5/5");
+	$("#date").prop('disabled', true);
+	$("#date").prop("type", "text");
+	$("#date").val("6/5/2021");
 	$("#status").val($(this).closest("tr").find("td:eq(7)").text());
 	$("#AccNo").val($(this).closest("tr").find("td:eq(6)").text());
 	$("#Cmr").val($(this).closest("tr").find("td:eq(5)").text());
@@ -60,34 +71,34 @@ $(document).on("click", "#btnUpdate", function() {
 
 $(document).on("click", "#btnRemove", function() {
 	$.ajax({
-		
-			url: "ConsumtionAPI",
-			type: "DELETE",
-			data: "Cid=" + $(this).data("cid"),
-			datatype: "text",
-			complete: function(response, status) {
-				console.log(response.responseText)
-				OnConsumptionDelete(response.responseText, status);
-			}
+
+		url: "ConsumtionAPI",
+		type: "DELETE",
+		data: "Cid=" + $(this).data("cid"),
+		datatype: "text",
+		complete: function(response, status) {
+			console.log(response.responseText)
+			OnConsumptionDelete(response.responseText, status);
+		}
 
 	});
-	
+
 })
 
 function OntemSave(response, status) {
 	console.log("hello", status);
-	var resultTest = JSON.parse(response); 
+	var resultTest = JSON.parse(response);
 	console.log(resultTest);
 	if (resultTest.status = "success") {
-		if(resultTest.Mstatus != "error"){
+		if (resultTest.Mstatus != "error") {
 			$("#alertSuccess").show();
 			$("#alertSuccess").text("Successfully Saved Data");
 			$("#table-grid").html(resultTest.data);
 		}
-        else{
+		else {
 			$("#alertError").show();
 			$("#alertError").text(resultTest.data);
-        }
+		}
 	}
 	else {
 		$("#alertError").show();
@@ -96,14 +107,14 @@ function OntemSave(response, status) {
 
 }
 
-function OnConsumptionDelete(response){
-	var resultTest = JSON.parse(response); 
+function OnConsumptionDelete(response) {
+	var resultTest = JSON.parse(response);
 	if (resultTest.status = "success") {
 		$("#alertSuccess").show();
 		$("#alertSuccess").text("Successfully deleted.");
 		$("#table-grid").html(resultTest.data);
 	}
-	else{
+	else {
 		$("#alertError").show();
 		$("#alertError").text("Something Went Wrong");
 	}

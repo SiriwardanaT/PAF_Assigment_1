@@ -12,7 +12,7 @@ public class ConsumptionService {
 	public static String getAllConsumptions() throws ClassNotFoundException, SQLException {
 		Connection con = DbConnection.getDbConnection();
 		if(con == null) {
-			return "database connection errror";
+			return "Database connection errror";
 		}
 		else {
 			
@@ -58,7 +58,7 @@ public class ConsumptionService {
 			String output = "";
 			Connection con = DbConnection.getDbConnection();
 			if(con == null) {
-				return "database connection errror";
+				return "Database connection errror";
 			}
 			else {
 				
@@ -109,7 +109,7 @@ public class ConsumptionService {
 			Connection con = DbConnection.getDbConnection();
 			String output = "";
 			if(con == null) {
-				return "";
+				return "Database connection errror";
 			}
 			else {
 				PreparedStatement preparedStatement =  con.prepareStatement("update consumption set status = ? , unitPrice = ?  where id = ? ");
